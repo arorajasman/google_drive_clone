@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_drive_clone/controllers/auth_controller.dart';
 import 'package:google_drive_clone/utils/app_colors.dart';
 import 'package:google_drive_clone/utils/app_strings.dart';
 import 'package:google_drive_clone/utils/app_utils.dart';
 
 class LoginScreen extends StatelessWidget {
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
+
   const LoginScreen({super.key});
+
+  // Updated method to handle login button press
+  void _onLoginButtonPressed() {
+    // final FormState? form = _formKey.currentState;
+    // if (form != null && form.validate()) {
+    //   // Form is valid, you can proceed with authentication logic
+    //   String email = _emailController.text;
+    //   String password = _passwordController.text;
+
+    //   print({email, password});
+
+    // using the find() method of type AuthController to find the AuthController
+    // that has been initialized already using the dependency injection and
+    // then call the login() method to login the user
+    Get.find<AuthController>().login(/*email: email, password: password*/);
+  }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +40,12 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        // resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
             _buildIconUI(context),
-            const Spacer(),
+            const SizedBox(height: 20.0),
             _buildBodyUI(context)
           ],
         ),
@@ -42,27 +66,86 @@ class LoginScreen extends StatelessWidget {
             // getting heading text list here
             ..._heading,
             const SizedBox(height: 20.0),
-            // getting sub heading text list here
+            // getting sub-heading text list here
             ..._subHeading,
             const SizedBox(height: 30.0),
-            _buildLoginButtonUI(context),
+            // _buildAuthFormUI(context),
           ],
         ),
       ),
     );
   }
 
-  Container _buildLoginButtonUI(BuildContext ctx) => Container(
-        width: MediaQuery.of(ctx).size.width / 1.7,
-        height: 50.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: Colors.deepOrangeAccent.withOpacity(0.8),
-        ),
-        child: Center(
-          child: Text(
-            AppStrings.letsGo,
-            style: AppUtils().appTextStyle(23, Colors.white, FontWeight.w700),
+//   Padding _buildAuthFormUI(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.fromLTRB(12, 0, 20, 0),
+//       child: Form(
+//         key: _formKey,
+//         child: Column(
+//           children: [
+//             _buildEmailTextField(),
+//             const SizedBox(height: 15.0),
+//             _buildPasswordTextField(),
+//             const SizedBox(height: 30.0),
+//             _buildLoginButtonUI(context),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+// // New method to build email text field
+//   Widget _buildEmailTextField() {
+//     return TextFormField(
+//       controller: _emailController,
+//       keyboardType: TextInputType.emailAddress,
+//       decoration: const InputDecoration(
+//         labelText: 'Email',
+//         icon: Icon(Icons.email),
+//       ),
+//       validator: (value) {
+//         if (value == null || value.isEmpty) {
+//           return 'Please enter your email';
+//         }
+//         // You can add more complex email validation logic here if needed
+//         return null;
+//       },
+//     );
+//   }
+
+// // New method to build password text field
+//   Widget _buildPasswordTextField() {
+//     return TextFormField(
+//       controller: _passwordController,
+//       obscureText: true,
+//       decoration: const InputDecoration(
+//         labelText: 'Password',
+//         icon: Icon(Icons.lock),
+//       ),
+//       validator: (value) {
+//         if (value == null || value.isEmpty) {
+//           return 'Please enter your password';
+//         }
+//         // You can add more complex password validation logic here if needed
+//         return null;
+//       },
+//     );
+//   }
+
+  InkWell _buildLoginButtonUI(BuildContext ctx) => InkWell(
+        onTap: _onLoginButtonPressed,
+        child: Container(
+          width: MediaQuery.of(ctx).size.width / 1.7,
+          height: 50.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.deepOrangeAccent.withOpacity(0.8),
+          ),
+          child: Center(
+            child: Text(
+              AppStrings.letsGo,
+              style: AppUtils().appTextStyle(23, Colors.white, FontWeight.w700),
+            ),
           ),
         ),
       );
